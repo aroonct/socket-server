@@ -5,10 +5,7 @@ const WebSocket = require("ws");
 const path = require("path");
 
 const app = express();
-const server = https.createServer({
-    cert: fs.readFileSync("/ruta/al/certificado.pem"), // Certificado SSL
-    key: fs.readFileSync("/ruta/a/la/clave_privada.pem"), // Clave privada SSL
-}, app);
+
 
 const wss = new WebSocket.Server({ server });
 
