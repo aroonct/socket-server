@@ -66,7 +66,7 @@ wss.on("connection", (socket) => {
     });
 });
 
-const PORT = process.env.PORT || 443;
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-    console.log(`🚀 Servidor WebSocket seguro en https://omechat-alpha.vercel.app`);
+    console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
 });
