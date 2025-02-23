@@ -1,12 +1,10 @@
-const fs = require("fs");
-const https = require("https");
 const express = require("express");
+const http = require("http");
 const WebSocket = require("ws");
 const path = require("path");
 
 const app = express();
-
-
+const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
 app.use(express.static(path.join(__dirname, "public")));
@@ -14,7 +12,7 @@ app.use(express.static(path.join(__dirname, "public")));
 let waitingUser = null;
 
 wss.on("connection", (socket) => {
-    console.log("✅ Nuevo usuario conectado");
+    console.log("Nuevo usuario conectado");
 
     socket.on("message", (message) => {
         const data = JSON.parse(message);
@@ -43,14 +41,6 @@ wss.on("connection", (socket) => {
         } 
         else if (data.type === "chat" && socket.partner) {
             socket.partner.send(JSON.stringify({ type: "chat", message: data.message }));
-        } 
-        else if (data.type === "next") {
-            if (socket.partner) {
-                socket.partner.send(JSON.stringify({ type: "partner_disconnected" }));
-                socket.partner.partner = null;
-            }
-            socket.partner = null;
-            socket.send(JSON.stringify({ type: "find_partner" }));
         }
     });
 
@@ -63,7 +53,8 @@ wss.on("connection", (socket) => {
     });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;  // Usa el puerto de Railway
 server.listen(PORT, () => {
     console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
 });
+
